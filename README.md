@@ -20,7 +20,7 @@ Este script Python foi desenvolvido para extrair informações de produtos da Pi
 
 1. Abra o terminal e navegue até o diretório onde o script `pichau_scraper.py` está localizado.
 
-2. Execute o script Python usando o seguinte comando:
+2. Execute o script Python usando o seguinte comando: python pichau_scraper.py
 
 
 3. O script irá extrair as informações dos produtos da Pichau na categoria "gabinete" e salvar os dados em um arquivo Excel chamado `produtos.xlsx` no mesmo diretório.
