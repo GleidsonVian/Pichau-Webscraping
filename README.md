@@ -1,34 +1,34 @@
-# Extrator de Informações de Produtos da Pichau
+# Raspar Dados da Pichau
 
-Este script Python foi desenvolvido para extrair informações de produtos da Pichau, um varejista de eletrônicos, para a categoria "gabinete". Ele utiliza técnicas de web scraping para coletar nomes, preços e links de produtos dessa categoria.
+Este é um projeto simples que demonstra como usar Python e Tkinter para criar uma interface gráfica para raspagem de dados do site da Pichau.
 
-## Requisitos
+## Pré-requisitos
 
-- Python 3.x
-- Bibliotecas Python: requests, BeautifulSoup, pandas
+Certifique-se de ter o Python instalado em sua máquina. Além disso, você precisará instalar os seguintes pacotes Python:
 
-## Instalação
+- `tkinter`: Para a criação da interface gráfica.
+- `requests`: Para fazer solicitações HTTP.
+- `beautifulsoup4`: Para fazer a análise HTML.
+- `pandas`: Para manipulação e análise de dados.
 
-1. Clone ou faça o download deste repositório.
+Você pode instalar esses pacotes usando o pip. Por exemplo:
+pip install -r requirements.txt (para baixar as libs de requirements.txt)
 
-2. Certifique-se de ter Python instalado em seu sistema. Você pode baixá-lo em [python.org](https://www.python.org/downloads/).
+## Como usar
 
-3. Instale as bibliotecas necessárias executando o seguinte comando no terminal:
+1. Clone este repositório em sua máquina local.
+2. Navegue até o diretório do projeto.
+3. Execute o script `main.py` com o Python.
 
-
-## Utilização
-
-1. Abra o terminal e navegue até o diretório onde o script `pichau_scraper.py` está localizado.
-
-2. Execute o script Python usando o seguinte comando: python pichau_scraper.py
+ python main.py
 
 
-3. O script irá extrair as informações dos produtos da Pichau na categoria "gabinete" e salvar os dados em um arquivo Excel chamado `produtos.xlsx` no mesmo diretório.
+4. Insira o nome do produto que deseja buscar no campo "Produto".
+5. Clique no botão "Raspar Produto" para iniciar a busca e salvar os dados em um arquivo Excel.
+6. Para sair do aplicativo, clique no botão "Sair".
 
-## Contribuições
+## Contribuindo
 
-Contribuições são bem-vindas! Se você encontrar algum problema, ou tiver sugestões de melhorias, por favor, abra uma issue ou envie um pull request.
+Contribuições são bem-vindas! Se você encontrar algum problema ou tiver sugestões de melhorias, sinta-se à vontade para abrir uma issue ou enviar um pull request.
 
-## Aviso Legal
 
-Este script foi desenvolvido apenas para fins educacionais e de demonstração. Certifique-se de usar este código de acordo com os termos de serviço e políticas de privacidade dos sites que você está raspando.
