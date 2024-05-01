@@ -2,66 +2,56 @@ import requests
 from bs4 import BeautifulSoup
 import pandas as pd
 
-# Define o cabeçalho para simular um navegador ao fazer a requisição
+
 headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36'}
 
 def pegar_url(item):
-    """Função para criar a URL de pesquisa com base no item fornecido."""
     modelo = 'https://www.pichau.com.br/search?q={}'
-    url = modelo.format(item)
-    return url
+    return modelo.format(item)
 
-# Chama a função para obter a URL de pesquisa para 'gabinete'
-url = pegar_url('gabinete')
+def raspar_dados(url):
+    nomes = []
+    precos = []
+    links = []
 
-# Faz a requisição GET ao site usando a URL criada
-resposta = requests.get(url, headers=headers)
+    resposta = requests.get(url, headers=headers)
+    site = BeautifulSoup(resposta.content, 'html.parser')
+    card_produtos = site.find_all('div', class_='MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 MuiGrid-grid-md-4 MuiGrid-grid-lg-3 MuiGrid-grid-xl-2')
 
-# Parseia o conteúdo HTML da página usando BeautifulSoup
-site = BeautifulSoup(resposta.content, 'html.parser')
+    for card in card_produtos:
+        try:
+            nome = card.find('h2', class_='MuiTypography-root jss80 jss81 MuiTypography-h6').text.strip()
+            nomes.append(nome)
+        except AttributeError:
+            nomes.append('Nome não encontrado')
 
-# Encontra todos os cards de produtos na página
-card_produtos = site.find_all('div', attrs={'class': 'MuiGrid-root MuiGrid-item MuiGrid-grid-xs-12 MuiGrid-grid-sm-6 MuiGrid-grid-md-4 MuiGrid-grid-lg-3 MuiGrid-grid-xl-2'})
+        try:
+            preco = card.find('div', class_='jss83').text.strip()
+            precos.append(preco)
+        except AttributeError:
+            precos.append('Preço não encontrado')
 
-# Inicializa listas vazias para armazenar os nomes, preços e links dos produtos
-nomes = []
-precos = []
-links = []
+        try:
+            link = 'https://www.pichau.com.br' + card.find('a')['href']
+            links.append(link)
+        except (AttributeError, TypeError):
+            links.append('Link não encontrado')
 
-# Itera sobre cada card de produto encontrado
-for card in card_produtos:
-    # Encontra o elemento HTML que contém o nome do produto
-    nome = card.find('h2', 'MuiTypography-root jss80 jss81 MuiTypography-h6')
-    # Adiciona o texto do nome do produto à lista 'nomes'
-    nomes.append(nome.text)
-    
-    # Encontra o elemento HTML que contém o preço do produto
-    preco = card.find('div', 'jss83')
-    # Adiciona o texto do preço do produto à lista 'precos'
-    precos.append(preco.text)
+    return nomes, precos, links
 
-    try:
-        # Encontra o elemento HTML que contém o link do produto
-        link = card.find('a', 'jss16')
-        # Concatena o link base com o link encontrado e adiciona à lista 'links'
-        link = 'https://www.pichau.com.br' + link['href']
-        links.append(link)
-        print(link)
-    except RuntimeError:
-        print('Erro ao pegar os links')
+def criar_arquivo_excel(nomes, precos, links, nome_do_arquivo_excel):
+    data = {'Nome': nomes, 'Preço': precos, 'Link': links}
+    df = pd.DataFrame(data)
+    df.to_excel(f'{nome_do_arquivo_excel}.xlsx', index=False)
+    print(f"Arquivo '{nome_do_arquivo_excel}.xlsx' criado com sucesso!")
 
-# Cria um dicionário com as listas de nomes, preços e links
-data = {
-    'Nome': nomes,
-    'Preço': precos,
-    'Link': links
-}
+def main():
+    item = input('Escolha um item para ser raspado informações: ')
+    url = pegar_url(item)
+    nomes, precos, links = raspar_dados(url)
+    nome_do_arquivo_excel = input('Qual o nome para o arquivo excel atual? ')
+    criar_arquivo_excel(nomes, precos, links,nome_do_arquivo_excel)
 
-# Cria um DataFrame do Pandas com os dados e sem índices
-df = pd.DataFrame(data, index=None)
+if __name__ == "__main__":
+    main()
 
-# Salva o DataFrame em um arquivo Excel
-df.to_excel('produtos.xlsx')
-
-# Imprime o DataFrame
-print(df)
