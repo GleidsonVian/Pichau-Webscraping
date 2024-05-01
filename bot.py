@@ -44,7 +44,7 @@ def criar_arquivo_excel(nomes, precos, links, nome_do_arquivo_excel):
     data = {'Nome': nomes, 'Preço': precos, 'Link': links}
     df = pd.DataFrame(data)
     df.to_excel(f'{nome_do_arquivo_excel}.xlsx', index=False)
-    print(f"Arquivo '{nome_do_arquivo_excel}.xlsx' criado com sucesso!")
+    print(f"Arquivo '{nome_do_arquivo_excel}.csv' criado com sucesso!")
 
 def salvar_produto():
     produto = entrada_produto.get()  # Obtém o texto digitado pelo usuário
